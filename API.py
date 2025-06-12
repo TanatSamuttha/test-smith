@@ -2,7 +2,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from task_gen import taskgen2
+from task_gen import taskgen
 from tagger import tagger
 
 from fastapi.responses import StreamingResponse
@@ -16,7 +16,7 @@ class contentName(BaseModel):
 
 @app.post("/task-gen")
 async def task_gen(req: contentName):
-    task_files = taskgen2.generate_task(req)
+    task_files = taskgen.generate_task(req)
 
     buffer = BytesIO()
     with zipfile.ZipFile(buffer, "w") as zipf:

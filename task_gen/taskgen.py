@@ -44,7 +44,7 @@ def generate_task(contentFromUser: contentFromUser):
         f.write(res.content)
 
     taskfile = res.content.split("________________________________________")
-    task_name = task_name.replace("\n", "")
+    task_name = taskfile[0].replace("\n", "")
     pos = task_name.find('.txt')
     if pos != -1:
         task_name = task_name[pos + len('.txt'):]
