@@ -1,0 +1,100 @@
+fibonacci_sequence
+________________________________________
+# โจทย์ Fibonacci Sequence
+
+จงเขียนฟังก์ชันเพื่อคำนวณหาเลข Fibonacci ลำดับที่ n โดยมีเงื่อนไขดังนี้:
+
+*   F(0) = 0
+*   F(1) = 1
+*   F(n) = F(n-1) + F(n-2) สำหรับ n > 1
+
+**Input:**
+
+*   `n`: จำนวนเต็มที่ไม่ติดลบ (n >= 0) ที่ระบุลำดับของ Fibonacci ที่ต้องการคำนวณ
+
+**Output:**
+
+*   ค่าของเลข Fibonacci ลำดับที่ n
+
+**ข้อกำหนด:**
+
+*   ห้ามใช้ recursion (recursion จะทำให้ test case ที่ n เยอะๆ ไม่ผ่าน)
+*   ให้ใช้ `std::vector` หรือตัวแปรอื่นๆ ในการเก็บค่าระหว่างการคำนวณได้
+*   ใช้ `unsigned long long` เป็นชนิดข้อมูลสำหรับ return และตัวแปรภายในฟังก์ชัน เพื่อรองรับค่า Fibonacci ที่มีขนาดใหญ่
+
+**ตัวอย่าง:**
+
+| Input (n) | Output (F(n)) |
+| --------- | -------------- |
+| 0         | 0              |
+| 1         | 1              |
+| 2         | 1              |
+| 3         | 2              |
+| 10        | 55             |
+| 45        | 1134903170     |
+
+## วิธี execute
+เข้าไปที่ directory fibonacci_sequence
+รันคำสั่ง make run build
+________________________________________
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Iinclude
+SRC_DIR = src
+TEST_DIR = tests
+BUILD_DIR = build
+
+all: $(BUILD_DIR)/main
+
+$(BUILD_DIR)/main: $(SRC_DIR)/fibonacci_sequence.cpp $(TEST_DIR)/main.cpp
+	mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) $(SRC_DIR)/fibonacci_sequence.cpp $(TEST_DIR)/main.cpp -o $(BUILD_DIR)/main
+
+run: all
+	./$(BUILD_DIR)/main
+
+clean:
+	rm -rf $(BUILD_DIR)
+________________________________________
+#ifndef FIBONACCI_SEQUENCE_H#define FIBONACCI_SEQUENCE_H
+#include <vector>
+int fibonacci_sequence(int n);
+#endif // FIBONACCI_SEQUENCE_H
+________________________________________
+#include "fibonacci_sequence.h"
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+int main() {
+    int score = 0;
+
+    vector<pair<int, int>> testCases = {
+        {0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3},
+        {5, 5}, {6, 8}, {7, 13}, {8, 21}, {10, 55}
+    };
+
+    for (size_t i = 0; i < testCases.size(); ++i) {
+        int n = testCases[i].first;
+        int expected = testCases[i].second;
+        int result = fibonacci_sequence(n);
+        if (result == expected) {
+            cout << "Test " << i + 1 << " ✅ (+10 points)\n";
+            score += 10;
+        } else {
+            cout << "Test " << i + 1 << " ❌ (Expected : " << expected << ", Given : " << result << ")\n";
+        }
+    }
+
+    cout << "\n🎯 Total Score : " << score << " / 100\n";
+    return 0;
+}
+________________________________________
+#include "fibonacci_sequence.h"
+#include <vector>
+
+using namespace std;
+
+int fibonacci_sequence(int n) {
+    // add your code here        
+	return -1 ;
+}

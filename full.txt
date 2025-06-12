@@ -1,0 +1,225 @@
+longest_increasing_subsequence
+________________________________________
+# โจทย์: ลำดับเพิ่มขึ้นยาวที่สุด (Longest Increasing Subsequence)
+
+## คำอธิบาย
+
+จงเขียนโปรแกรมเพื่อหาความยาวของลำดับย่อยที่เพิ่มขึ้นยาวที่สุด (Longest Increasing Subsequence หรือ LIS) จาก array ที่กำหนดให้
+
+**ลำดับย่อย** คือ ลำดับที่ได้จากการลบสมาชิกบางส่วน (หรือทั้งหมด) ออกจาก array โดยไม่เปลี่ยนลำดับของสมาชิกที่เหลือ
+
+**ลำดับเพิ่มขึ้น** คือ ลำดับที่สมาชิกแต่ละตัวมีค่ามากกว่าหรือเท่ากับสมาชิกตัวก่อนหน้า (เรียงจากซ้ายไปขวา)
+
+## ข้อมูลนำเข้า
+
+*   บรรทัดแรก: จำนวนเต็ม `n` (1 <= n <= 1000) แทนขนาดของ array
+*   บรรทัดที่สอง: array ของจำนวนเต็ม `arr` ที่มี `n` สมาชิก แต่ละสมาชิก `arr[i]` มีค่า -1000 <= `arr[i]` <= 1000
+
+## ข้อมูลส่งออก
+
+*   บรรทัดเดียว: ความยาวของ LIS
+
+## ตัวอย่าง
+
+**Input:**
+
+```
+5
+1 3 2 4 5
+```
+
+**Output:**
+
+```
+4
+```
+
+**คำอธิบาย:** LIS คือ `1 2 4 5` ซึ่งมีความยาว 4
+
+**Input:**
+
+```
+8
+10 22 9 33 21 50 41 60
+```
+
+**Output:**
+
+```
+6
+```
+
+**คำอธิบาย:** LIS คือ `10 22 33 50 41 60` หรือ `10 22 33 50 60` ซึ่งมีความยาว 6
+
+## ข้อกำหนด
+
+*   ใช้ C++
+*   ใช้ `vector` และ `std` เท่านั้น (ห้ามใช้ไลบรารีพิเศษอื่น ๆ)
+*   ฟังก์ชันที่ต้องเขียน: `int lis(const vector<int>& arr)`
+
+## วิธี execute
+
+เข้าไปที่ directory longest_increasing_subsequence
+รันคำสั่ง make run build
+________________________________________
+CC = g++
+CFLAGS = -Wall -Wextra -std=c++11
+BUILD_DIR = build
+SRC_DIR = src
+INCLUDE_DIR = include
+TEST_DIR = tests
+
+TARGET = main
+
+$(TARGET): $(BUILD_DIR)/main.o $(BUILD_DIR)/lis.o
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/main.o $(BUILD_DIR)/lis.o
+
+$(BUILD_DIR)/main.o: $(TEST_DIR)/main.cpp
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(TEST_DIR)/main.cpp -o $(BUILD_DIR)/main.o -I$(INCLUDE_DIR)
+
+$(BUILD_DIR)/lis.o: $(SRC_DIR)/lis.cpp $(INCLUDE_DIR)/lis.h
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/lis.cpp -o $(BUILD_DIR)/lis.o -I$(INCLUDE_DIR)
+
+run: $(TARGET)
+	$(BUILD_DIR)/$(TARGET)
+
+build: $(TARGET)
+
+clean:
+	rm -rf $(BUILD_DIR)
+________________________________________
+#ifndef LIS_H
+#define LIS_H
+
+#include <vector>
+
+int lis(const std::vector<int>& arr);
+
+#endif
+________________________________________
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#include "lis.h"
+
+int main() {
+    int score = 0;
+
+    // Test case 1
+    std::vector<int> arr1 = {1, 3, 2, 4, 5};
+    if (lis(arr1) == 4) {
+        std::cout << "Test Case 1: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 1: ❌" << std::endl;
+    }
+
+    // Test case 2
+    std::vector<int> arr2 = {10, 22, 9, 33, 21, 50, 41, 60};
+    if (lis(arr2) == 6) {
+        std::cout << "Test Case 2: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 2: ❌" << std::endl;
+    }
+
+    // Test case 3
+    std::vector<int> arr3 = {5, 4, 3, 2, 1};
+    if (lis(arr3) == 1) {
+        std::cout << "Test Case 3: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 3: ❌" << std::endl;
+    }
+
+    // Test case 4
+    std::vector<int> arr4 = {1, 2, 3, 4, 5};
+    if (lis(arr4) == 5) {
+        std::cout << "Test Case 4: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 4: ❌" << std::endl;
+    }
+
+    // Test case 5
+    std::vector<int> arr5 = {1};
+    if (lis(arr5) == 1) {
+        std::cout << "Test Case 5: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 5: ❌" << std::endl;
+    }
+
+    // Test case 6
+    std::vector<int> arr6 = {1, 3, 6, 7, 9, 4, 10, 5, 6};
+     if (lis(arr6) == 7) {
+        std::cout << "Test Case 6: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 6: ❌" << std::endl;
+    }
+
+    // Test case 7
+    std::vector<int> arr7 = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
+     if (lis(arr7) == 6) {
+        std::cout << "Test Case 7: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 7: ❌" << std::endl;
+    }
+   // Test case 8
+    std::vector<int> arr8 = {2,1,2,1,2,1,2,1,2};
+     if (lis(arr8) == 2) {
+        std::cout << "Test Case 8: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 8: ❌" << std::endl;
+    }
+
+    // Test case 9
+    std::vector<int> arr9 = {-2, -1};
+     if (lis(arr9) == 2) {
+        std::cout << "Test Case 9: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 9: ❌" << std::endl;
+    }
+
+    // Test case 10
+    std::vector<int> arr10 = {5,6,7,1,2,8,9};
+     if (lis(arr10) == 5) {
+        std::cout << "Test Case 10: ✅ +10" << std::endl;
+        score += 10;
+    } else {
+        std::cout << "Test Case 10: ❌" << std::endl;
+    }
+
+    std::cout << "Total Score: " << score << "/100" << std::endl;
+
+    return 0;
+}
+________________________________________
+#include "lis.h"
+#include <vector>
+#include <algorithm>
+
+int lis(const std::vector<int>& arr) {
+    if (arr.empty()) {
+        return 0;
+    }
+
+    std::vector<int> tails;
+    for (int num : arr) {
+        auto it = std::lower_bound(tails.begin(), tails.end(), num);
+        if (it == tails.end()) {
+            tails.push_back(num);
+        } else {
+            *it = num;
+        }
+    }
+
+    return tails.size();
+}
