@@ -1,31 +1,36 @@
+# fastapi dev main.py
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
+from pydantic import BaseModel
+from fastapi import FastAPI
 from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+app = FastAPI()
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro-preview-03-25")
+
+class contentFromUser(BaseModel):
+    content_name: str
 
 with open("prompt.txt", "r", encoding="utf-8") as f:
     structure = f.read()
 
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "คุณคือคนที่ต้องสร้างโจทย์ competetive programming โดยต้องทำตามโครงสร้างใน human message อย่างเคร่งครัด"),
-    ("human", "ฉันกำลังจะสอนนักเรียนระดับ สอวน. คอมพิวเตอร์ ให้เขียนโปรแกรมเรื่อง **{content}**\nช่วยสร้างโมดูลการเรียนรู้ที่มีโครงสร้างโปรเจกต์แบบเดียวกับหัวข้อ {content}  โดยมีรายละเอียดดังนี้\n\n:"+structure)
-])
+@app.post("/generate-task")
+async def generate_task(contentFromUser: contentFromUser):
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", "คุณคือคนที่ต้องสร้างโจทย์ competetive programming โดยต้องทำตามโครงสร้างใน human message อย่างเคร่งครัด"),
+        ("human", "ฉันกำลังจะสอนนักเรียนระดับ สอวน. คอมพิวเตอร์ ให้เขียนโปรแกรมเรื่อง **{content}**\nช่วยสร้างโมดูลการเรียนรู้ที่มีโครงสร้างโปรเจกต์แบบเดียวกับหัวข้อ {content}  โดยมีรายละเอียดดังนี้\n\n:"+structure)
+    ])
+    chain = prompt|llm
+    res = chain.invoke({"content": contentFromUser.content_name})
 
-chain = prompt|llm
+    readme, makefile, header, main, task = res.content.split("________________________________________")
 
-res = chain.invoke({"content":"binary search"})
-
-with open(f"result/full.txt", "w", encoding="utf-8") as f:
-    f.write(res.content)
-
-txtfile = res.content.split("________________________________________")
-
-fileName = ["readme.md", "Makefile", "include/header.h", "tests/main.cpp", "src/task.cpp"]
-for file, name in zip(txtfile, fileName):
-    with open(f"result/{name}", "w", encoding="utf-8") as f:
-        f.write(file)
-
-print("success")
+    return {"readme.md": readme,
+            "Makefile": makefile,
+            "header.h": header,
+            "main.cpp": main,
+            "task.cpp": task
+            }
