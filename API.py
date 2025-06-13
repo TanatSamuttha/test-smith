@@ -1,11 +1,10 @@
 # fastapi dev API.py
-from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from task_gen import taskgen
 from tagger import tagger
-
-from fastapi.responses import StreamingResponse
 from io import BytesIO
 import zipfile
 
@@ -16,7 +15,7 @@ class contentName(BaseModel):
 
 @app.post("/task-gen")
 async def task_gen(req: contentName):
-    task_files = taskgen.generate_task(req)
+    task_files = await taskgen.generate_task(req)
 
     buffer = BytesIO()
     with zipfile.ZipFile(buffer, "w") as zipf:
@@ -36,8 +35,8 @@ async def read_file(file: UploadFile = File(...)):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ระบุ origin ที่อนุญาต (หรือใช้ ["*"] ชั่วคราว)
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],    # อนุญาตทุก method เช่น GET, POST, OPTIONS
-    allow_headers=["*"],    # อนุญาตทุก header
+    allow_methods=["*"],
+    allow_headers=["*"],
 )

@@ -31,17 +31,14 @@ with open("task_gen/prompt.txt", "r", encoding="utf-8") as f:
 class contentFromUser(BaseModel):
     content_name: str
 
-def generate_task(contentFromUser: contentFromUser):
+async def generate_task(contentFromUser: contentFromUser) -> list[UploadFile]:
     prompt = ChatPromptTemplate.from_messages([
         ("system", "คุณคือคนที่ต้องสร้างโจทย์ competetive programming โดยต้องทำตามโครงสร้างใน human message อย่างเคร่งครัด"),
         ("human", "ฉันกำลังจะสอนนักเรียนระดับ สอวน. คอมพิวเตอร์ ให้เขียนโปรแกรมเรื่อง **{content}**\nช่วยสร้างโมดูลการเรียนรู้ที่มีโครงสร้างโปรเจกต์แบบเดียวกับหัวข้อ {content}  โดยมีรายละเอียดดังนี้\n\n:"+structure+"รูปแบบต้องเหมือนกับเอกสารนี้ {context}")
     ])
     chain = prompt | llm
     content_name = contentFromUser.content_name.lower().replace(" ", "_")
-    res = chain.invoke({"content": content_name, "context": retrievers})
-
-    with open(f"full.txt", "w", encoding="utf-8") as f:
-        f.write(res.content)
+    res = await chain.ainvoke({"content": content_name, "context": retrievers})
 
     taskfile = res.content.split("________________________________________")
     task_name = taskfile[0].replace("\n", "")

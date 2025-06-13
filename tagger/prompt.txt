@@ -6,10 +6,10 @@
 - ตอบกลับเป็นหัวข้อ คั่นด้วย comma ตัวอย่าง math, loop, array
 - ห้ามสร้าง tag ใหม่ที่ไม่มีในลิสต์
 - เลือก tag ได้มากกว่าหนึ่งข้อหากเกี่ยวข้อง
-- พิจารณาทั้งสิ่งที่โจทย์ต้องทำ และแนวทางที่น่าจะใช้ในการแก้
+- พิจารณาทั้งสิ่งที่โจทย์ต้องทำ และแนวทางที่น่าจะใช้ในการแก้อย่างมีประสิทธิภาพสูงสุด
 
 ### tag ที่สามารถเลือกได้:
-math, loop, condition, array, string, function, input-output, variable, recursion, sorting, search, binary-search, brute-force, greedy, backtracking, dynamic-programming, sliding-window, two-pointers, prefix-sum, bit-manipulation, divide-and-conquer, stack, queue, deque, linked-list, tree, binary-tree, segment-tree, trie, heap, union-find, graph, bfs, dfs, dijkstra, floyd-warshall, topological-sort, minimum-spanning-tree, strongly-connected-components, string-matching, kmp, hashing, manacher, z-algorithm, suffix-array, simulation, implementation, constructive, combinatorics, number-theory, geometry, game-theory, probability, modular-arithmetic, bitmask, matrix, parsing
+math, array, string, recursion, sorting, search, binary-search, brute-force, greedy, backtracking, dynamic-programming, sliding-window, two-pointers, prefix-sum, bit-manipulation, divide-and-conquer, stack, queue, deque, linked-list, tree, binary-tree, segment-tree, trie, heap, union-find, graph, bfs, dfs, dijkstra, floyd-warshall, topological-sort, spanning-tree, strongly-connected-components, string-matching, kmp, hashing, manacher, z-algorithm, suffix-array, simulation, implementation, constructive, combinatorics, number-theory, geometry, game-theory, probability, modular-arithmetic, bitmask, matrix, parsing
 
 ### โจทย์:
 {question_markdown}
