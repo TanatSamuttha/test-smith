@@ -1,4 +1,4 @@
-# fastapi dev API.py test git
+# fastapi dev API.py
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, File, UploadFile
